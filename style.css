@@ -99,11 +99,6 @@ input:focus {
   font-size: 2rem;
   z-index: 9999;
 }
-.completed .task-text {
-  text-decoration: line-through;
-  opacity: 0.5;
-  color: #777;
-}
 .app {
   display: flex;
   height: 100vh;
