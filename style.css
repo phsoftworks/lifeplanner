@@ -47,3 +47,26 @@ li {
   text-decoration: line-through;
   opacity: 0.6;
 }
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f3f3f3;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  transition: 0.2s;
+}
+
+li:hover {
+  transform: scale(1.02);
+}
+
+.delete-btn {
+  background: #ff4d4d;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
