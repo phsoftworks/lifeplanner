@@ -12,6 +12,12 @@ function addTask() {
 li.addEventListener("click", function() {
   li.classList.toggle("completed");
 });
+ const deleteBtn = li.querySelector(".delete-btn");
+
+deleteBtn.addEventListener("click", function(event) {
+  event.stopPropagation();
+  li.remove();
+});
   document.getElementById("taskList").appendChild(li);
 
   input.value = "";
