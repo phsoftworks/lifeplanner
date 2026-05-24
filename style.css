@@ -132,3 +132,33 @@ input:focus {
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   padding: 20px;
 }
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day {
+  background: white;
+  border-radius: 8px;
+  min-height: 60px;
+  padding: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #eee;
+}
+
+.day:hover {
+  background: #f0f0f0;
+}
+
+.dropzone {
+  min-height: 30px;
+}
