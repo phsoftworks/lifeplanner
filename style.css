@@ -62,4 +62,11 @@ li:hover {
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #ff1a1a;
+  transform: scale(1.1);
 }
