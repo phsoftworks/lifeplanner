@@ -6,11 +6,13 @@
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 </head>
+
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 </script>
+
 <script>
 window.onload = () => {
   setTimeout(() => {
@@ -19,9 +21,15 @@ window.onload = () => {
   }, 800);
 };
 </script>
+
 <body>
+
 <div id="splash">🧠 LifePlanner</div>
-  <div class="container">
+
+<div class="app">
+
+  <!-- SIDEBAR IZQUIERDA -->
+  <div class="sidebar">
     <h1>🧠 LifePlanner</h1>
     <p>Organiza tu día sin estrés</p>
 
@@ -31,7 +39,17 @@ window.onload = () => {
     <ul id="taskList"></ul>
   </div>
 
-  <script src="script.js"></script>
+  <!-- PANEL DERECHO -->
+  <div class="main">
+    <h2>📅 Calendario</h2>
+    <div class="calendar">
+      Próximamente...
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
 </body>
- </html>
- 
+</html>

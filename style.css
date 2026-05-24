@@ -104,3 +104,31 @@ input:focus {
   opacity: 0.5;
   color: #777;
 }
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* IZQUIERDA */
+.sidebar {
+  width: 300px;
+  background: white;
+  padding: 20px;
+  box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+  overflow-y: auto;
+}
+
+/* CENTRO / DERECHA */
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+/* calendario fake por ahora */
+.calendar {
+  background: white;
+  height: 80%;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  padding: 20px;
+}
