@@ -70,3 +70,9 @@ li:hover {
   background: #ff1a1a;
   transform: scale(1.1);
 }
+.status {
+  color: #4CAF50;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 10px;
+}
