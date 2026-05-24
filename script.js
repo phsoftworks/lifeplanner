@@ -189,7 +189,7 @@ function drop(ev) {
 function renderCalendar() {
   const calendar = document.getElementById("calendar");
   const title = document.getElementById("monthTitle");
-
+if (!calendar || !title) return;
   calendar.innerHTML = "";
 
   const year = currentDate.getFullYear();
