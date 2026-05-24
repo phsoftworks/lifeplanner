@@ -1,4 +1,9 @@
+
 let currentDate = new Date();
+
+/* =========================
+   🧠 ADD TASK
+========================= */
 function addTask() {
   const input = document.getElementById("taskInput");
   const taskText = input.value;
@@ -14,20 +19,20 @@ function addTask() {
     <button class="delete-btn">❌</button>
   `;
 
+  // draggable (para calendario futuro)
+  li.setAttribute("draggable", "true");
+  li.id = "task-" + Date.now();
+
   const check = li.querySelector(".check");
   const status = li.querySelector(".status");
+  const deleteBtn = li.querySelector(".delete-btn");
 
-  check.addEventListener("click", function(event) {
+  /* ===== COMPLETAR ===== */
+  check.addEventListener("click", (event) => {
     event.stopPropagation();
 
     li.classList.toggle("completed");
-const taskList = document.getElementById("taskList");
 
-if (li.classList.contains("completed")) {
-  taskList.appendChild(li);
-} else {
-  taskList.insertBefore(li, taskList.firstChild);
-}
     if (li.classList.contains("completed")) {
       check.textContent = "☑";
       status.textContent = "Completado";
@@ -37,28 +42,28 @@ if (li.classList.contains("completed")) {
     }
 
     saveTasks();
+    reorderTasks();
   });
 
-  const deleteBtn = li.querySelector(".delete-btn");
-
-  deleteBtn.addEventListener("click", function(event) {
+  /* ===== BORRAR ===== */
+  deleteBtn.addEventListener("click", (event) => {
     event.stopPropagation();
     li.remove();
     saveTasks();
   });
 
- const taskList = document.getElementById("taskList");
+  /* ===== DRAG START ===== */
+  li.addEventListener("dragstart", drag);
 
-if (li.classList.contains("completed")) {
-  taskList.appendChild(li);
-} else {
-  taskList.insertBefore(li, taskList.firstChild);
-}
+  document.getElementById("taskList").appendChild(li);
 
   saveTasks();
   input.value = "";
 }
 
+/* =========================
+   📦 GUARDAR
+========================= */
 function saveTasks() {
   const tasks = [];
 
@@ -66,14 +71,35 @@ function saveTasks() {
     const textElement = li.querySelector(".task-text");
 
     tasks.push({
-      text: textElement ? textElement.textContent : "",
+      text: textElement.textContent,
       completed: li.classList.contains("completed")
     });
   });
 
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-window.onload = function() {
+
+/* =========================
+   🔄 REORDENAR
+   (completadas abajo)
+========================= */
+function reorderTasks() {
+  const taskList = document.getElementById("taskList");
+  const tasks = Array.from(taskList.children);
+
+  tasks.sort((a, b) => {
+    const aDone = a.classList.contains("completed");
+    const bDone = b.classList.contains("completed");
+    return aDone - bDone;
+  });
+
+  tasks.forEach(t => taskList.appendChild(t));
+}
+
+/* =========================
+   💾 CARGAR
+========================= */
+window.onload = function () {
   const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   savedTasks.forEach(task => {
@@ -86,8 +112,12 @@ window.onload = function() {
       <button class="delete-btn">❌</button>
     `;
 
+    li.setAttribute("draggable", "true");
+    li.id = "task-" + Date.now();
+
     const check = li.querySelector(".check");
     const status = li.querySelector(".status");
+    const deleteBtn = li.querySelector(".delete-btn");
 
     if (task.completed) {
       li.classList.add("completed");
@@ -95,7 +125,7 @@ window.onload = function() {
       status.textContent = "Completado";
     }
 
-    check.addEventListener("click", function(event) {
+    check.addEventListener("click", (event) => {
       event.stopPropagation();
 
       li.classList.toggle("completed");
@@ -109,29 +139,62 @@ window.onload = function() {
       }
 
       saveTasks();
+      reorderTasks();
     });
 
-    const deleteBtn = li.querySelector(".delete-btn");
-
-    deleteBtn.addEventListener("click", function(event) {
+    deleteBtn.addEventListener("click", (event) => {
       event.stopPropagation();
       li.remove();
       saveTasks();
     });
 
+    li.addEventListener("dragstart", drag);
+
     document.getElementById("taskList").appendChild(li);
   });
+
+  reorderTasks();
 };
 
-document.getElementById("taskInput").addEventListener("keydown", function(event) {
+/* =========================
+   ⌨️ ENTER
+========================= */
+document.getElementById("taskInput").addEventListener("keydown", function (event) {
   if (event.key === "Enter") {
     addTask();
   }
 });
 
+/* =========================
+   🌐 SERVICE WORKER
+========================= */
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+
+/* =========================
+   🧲 DRAG & DROP (CALENDARIO)
+========================= */
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+
+  const taskId = ev.dataTransfer.getData("text");
+  const task = document.getElementById(taskId);
+
+  ev.target.closest(".day")?.querySelector(".dropzone")?.appendChild(task);
+}
+
+/* =========================
+   🧠 SPLASH
+========================= */
 window.addEventListener("load", () => {
   const splash = document.getElementById("splash");
   if (splash) splash.style.display = "none";
