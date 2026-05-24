@@ -7,15 +7,6 @@ body {
   align-items: center;
 }
 
-.container {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  width: 350px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
 h1 {
   margin-bottom: 10px;
 }
@@ -121,9 +112,9 @@ input:focus {
 }
 
 /* calendario fake por ahora */
-.calendar {
+#calendar {
   background: white;
-  height: 80%;
+  min-height: 300px;
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.1);
   padding: 20px;
@@ -157,4 +148,16 @@ input:focus {
 
 .dropzone {
   min-height: 30px;
+}
+#dayTaskList button {
+  background: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#dayTaskList button:hover {
+  background: #ff1a1a;
 }
