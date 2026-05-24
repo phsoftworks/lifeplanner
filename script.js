@@ -50,15 +50,16 @@ function saveTasks() {
   const tasks = [];
 
   document.querySelectorAll("#taskList li").forEach(li => {
+    const textElement = li.querySelector(".task-text");
+
     tasks.push({
-      text: li.querySelector(".task-text").textContent,
+      text: textElement ? textElement.textContent : "",
       completed: li.classList.contains("completed")
     });
   });
 
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
-
 window.onload = function() {
   const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
