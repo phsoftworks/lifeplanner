@@ -39,6 +39,7 @@ button {
 .completed .task-text {
   text-decoration: line-through;
   opacity: 0.6;
+  color: #777;
 }
 li {
   display: flex;
