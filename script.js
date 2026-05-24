@@ -5,19 +5,23 @@ function addTask() {
   if (taskText === "") return;
 
   const li = document.createElement("li");
-  li.innerHTML = `
-  ${taskText}
-  <button class="delete-btn">❌</button>
-`;
-li.addEventListener("click", function() {
-  li.classList.toggle("completed");
-});
- const deleteBtn = li.querySelector(".delete-btn");
 
-deleteBtn.addEventListener("click", function(event) {
-  event.stopPropagation();
-  li.remove();
-});
+  li.innerHTML = `
+    ${taskText}
+    <button class="delete-btn">❌</button>
+  `;
+
+  li.addEventListener("click", function() {
+    li.classList.toggle("completed");
+  });
+
+  const deleteBtn = li.querySelector(".delete-btn");
+
+  deleteBtn.addEventListener("click", function(event) {
+    event.stopPropagation();
+    li.remove();
+  });
+
   document.getElementById("taskList").appendChild(li);
 
   input.value = "";
