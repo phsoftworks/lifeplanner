@@ -5,7 +5,10 @@ function addTask() {
   if (taskText === "") return;
 
   const li = document.createElement("li");
-  li.textContent = taskText;
+  li.innerHTML = `
+  ${taskText}
+  <button class="delete-btn">❌</button>
+`;
 li.addEventListener("click", function() {
   li.classList.toggle("completed");
 });
