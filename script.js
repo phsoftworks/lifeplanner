@@ -47,13 +47,30 @@ window.onload = function() {
     const li = document.createElement("li");
 
     li.innerHTML = `
-      ${task.text}
+      <span class="check">☐</span>
+      <span class="task-text">${task.text}</span>
       <button class="delete-btn">❌</button>
     `;
 
     if (task.completed) {
       li.classList.add("completed");
+      li.querySelector(".check").textContent = "☑";
     }
+
+    const check = li.querySelector(".check");
+
+    check.addEventListener("click", function(event) {
+      event.stopPropagation();
+      li.classList.toggle("completed");
+
+      if (li.classList.contains("completed")) {
+        check.textContent = "☑";
+      } else {
+        check.textContent = "☐";
+      }
+
+      saveTasks();
+    });
 
     li.addEventListener("click", function() {
       li.classList.toggle("completed");
@@ -71,9 +88,3 @@ window.onload = function() {
     document.getElementById("taskList").appendChild(li);
   });
 };
-
-document.getElementById("taskInput").addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    addTask();
-  }
-});
