@@ -37,31 +37,25 @@
 
     <div id="calendar"></div>
 
-    <!-- 🧠 ESTO ES LO QUE TE FALTABA -->
     <div id="selectedDayPanel">
       <h3 id="selectedDayTitle">Selecciona un día</h3>
 
-      <input id="dayTaskInput" placeholder="Nueva tarea para este día...">
+      <input id="dayTaskInput" placeholder="Tarea del día...">
       <button onclick="addTaskToDay()">Añadir</button>
 
       <ul id="dayTaskList"></ul>
     </div>
 
   </div>
-
 </div>
 
 <script src="script.js"></script>
 
-<!-- Service worker al final (mejor práctica) -->
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
-</script>
 
-<!-- Splash -->
-<script>
 window.addEventListener("load", () => {
   setTimeout(() => {
     const splash = document.getElementById("splash");

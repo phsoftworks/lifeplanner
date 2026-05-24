@@ -1,160 +1,89 @@
 body {
   font-family: Arial, sans-serif;
   background: linear-gradient(120deg, #89f7fe, #66a6ff);
-  height: 100vh;
+  margin: 0;
+}
+
+/* APP LAYOUT */
+.app {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
 }
 
-h1 {
-  margin-bottom: 10px;
+/* SIDEBAR */
+.sidebar {
+  width: 300px;
+  background: white;
+  padding: 20px;
+  overflow-y: auto;
 }
 
-input {
-  padding: 10px;
-  width: 70%;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+/* MAIN */
+.main {
+  flex: 1;
+  padding: 20px;
 }
 
-button {
-  padding: 10px 15px;
-  border: none;
-  background: #4CAF50;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.completed .task-text {
-  text-decoration: line-through;
-  opacity: 0.6;
-  color: #777;
-}
+/* TASKS */
 li {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #f3f3f3;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 10px;
   margin-top: 10px;
-  transition: 0.2s;
-}
-
-li:hover {
-  transform: scale(1.02);
-}
-
-.delete-btn {
-  background: #ff4d4d;
-  border: none;
-  color: white;
   border-radius: 8px;
-  padding: 6px 10px;
+}
+
+/* ❗ SOLO EL TEXTO SE TACHA */
+.completed .task-text {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* BOTÓN DELETE BONITO */
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
   cursor: pointer;
-  font-weight: bold;
-  transition: 0.2s;
 }
 
-.delete-btn:hover {
-  background: #ff1a1a;
-  transform: scale(1.1);
-}
-.status {
-  color: #4CAF50;
-  font-size: 14px;
-  font-weight: bold;
-  margin-left: 10px;
-}
-body {
-  animation: fadeIn 0.4s ease-in-out;
+/* CALENDARIO */
+#calendar {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+  min-height: 200px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.98); }
-  to { opacity: 1; transform: scale(1); }
+.day {
+  background: #fff;
+  border: 1px solid #ddd;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
-input:focus {
-  outline: none;
-  border: 2px solid #4CAF50;
+
+.day:hover {
+  background: #eee;
 }
+
+/* SPLASH */
 #splash {
   position: fixed;
   inset: 0;
   background: #4CAF50;
   color: white;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  z-index: 9999;
-}
-.app {
-  display: flex;
-  height: 100vh;
-}
-
-/* IZQUIERDA */
-.sidebar {
-  width: 300px;
-  background: white;
-  padding: 20px;
-  box-shadow: 5px 0 20px rgba(0,0,0,0.1);
-  overflow-y: auto;
-}
-
-/* CENTRO / DERECHA */
-.main {
-  flex: 1;
-  padding: 30px;
-}
-
-/* calendario fake por ahora */
-#calendar {
-  background: white;
-  min-height: 300px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  padding: 20px;
-}
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-#calendar {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-}
-
-.day {
-  background: white;
-  border-radius: 8px;
-  min-height: 60px;
-  padding: 5px;
-  font-size: 12px;
-  cursor: pointer;
-  border: 1px solid #eee;
-}
-
-.day:hover {
-  background: #f0f0f0;
-}
-
-#dayTaskList button {
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 5px 8px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#dayTaskList button:hover {
-  background: #ff1a1a;
+  font-size: 30px;
 }
