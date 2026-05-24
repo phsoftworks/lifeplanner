@@ -71,3 +71,8 @@ window.onload = function() {
     document.getElementById("taskList").appendChild(li);
   });
 };
+document.getElementById("taskInput").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    addTask();
+  }
+});
