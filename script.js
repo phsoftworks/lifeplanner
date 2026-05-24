@@ -7,9 +7,25 @@ function addTask() {
   const li = document.createElement("li");
 
   li.innerHTML = `
-    ${taskText}
-    <button class="delete-btn">❌</button>
-  `;
+  <span class="check">☐</span>
+  <span class="task-text">${taskText}</span>
+  <button class="delete-btn">❌</button>
+`;
+const check = li.querySelector(".check");
+
+check.addEventListener("click", function(event) {
+  event.stopPropagation();
+
+  li.classList.toggle("completed");
+
+  if (li.classList.contains("completed")) {
+    check.textContent = "☑";
+  } else {
+    check.textContent = "☐";
+  }
+
+  saveTasks();
+});
 
   li.addEventListener("click", function() {
     li.classList.toggle("completed");
@@ -91,3 +107,8 @@ window.onload = function() {
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+document.getElementById("taskInput").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    addTask();
+  }
+});
