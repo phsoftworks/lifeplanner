@@ -40,13 +40,19 @@ window.onload = () => {
   </div>
 
   <!-- PANEL DERECHO -->
-  <div class="main">
-    <h2>📅 Calendario</h2>
-    <div class="calendar">
-      Próximamente...
-    </div>
+ <div class="main">
+
+  <h2>📅 Calendario</h2>
+
+  <div class="calendar-header">
+    <button onclick="prevMonth()">◀</button>
+    <h3 id="monthTitle"></h3>
+    <button onclick="nextMonth()">▶</button>
   </div>
 
+  <div id="calendar"></div>
+
+</div>
 </div>
 
 <script src="script.js"></script>
