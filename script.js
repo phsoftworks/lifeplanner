@@ -95,7 +95,6 @@ function reorderTasks() {
 // =========================
 // 💾 CARGAR TASKS
 // =========================
-window.onload = function () {
   const saved = JSON.parse(localStorage.getItem("tasks")) || [];
 
   saved.forEach(task => {
@@ -302,4 +301,7 @@ function saveCalendar() {
 window.addEventListener("load", () => {
   const splash = document.getElementById("splash");
   if (splash) splash.style.display = "none";
+});
+document.addEventListener("DOMContentLoaded", () => {
+  renderCalendar();
 });
