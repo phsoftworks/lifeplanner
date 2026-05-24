@@ -43,3 +43,7 @@ li {
   padding: 8px;
   border-radius: 8px;
 }
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
