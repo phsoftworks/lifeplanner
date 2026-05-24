@@ -6,9 +6,10 @@ function addTask() {
 
   const li = document.createElement("li");
 
-  li.innerHTML = `
+li.innerHTML = `
   <span class="check">☐</span>
   <span class="task-text">${taskText}</span>
+  <span class="status"></span>
   <button class="delete-btn">❌</button>
 `;
 const check = li.querySelector(".check");
@@ -74,17 +75,18 @@ window.onload = function() {
     }
 
     const check = li.querySelector(".check");
-
+const status = li.querySelector(".status");
     check.addEventListener("click", function(event) {
       event.stopPropagation();
       li.classList.toggle("completed");
 
       if (li.classList.contains("completed")) {
-        check.textContent = "☑";
-      } else {
-        check.textContent = "☐";
-      }
-
+  check.textContent = "☑";
+  status.textContent = "Completado";
+} else {
+  check.textContent = "☐";
+  status.textContent = "";
+}
       saveTasks();
     });
 
