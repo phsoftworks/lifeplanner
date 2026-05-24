@@ -146,9 +146,6 @@ input:focus {
   background: #f0f0f0;
 }
 
-.dropzone {
-  min-height: 30px;
-}
 #dayTaskList button {
   background: #ff4d4d;
   color: white;
