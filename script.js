@@ -1,3 +1,4 @@
+let currentDate = new Date();
 function addTask() {
   const input = document.getElementById("taskInput");
   const taskText = input.value;
