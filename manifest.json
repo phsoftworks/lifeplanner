@@ -1,10 +1,10 @@
 {
-  "name": "Life Planner",
+  "name": "LifePlanner",
   "short_name": "Planner",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#4CAF50",
   "icons": [
     {
       "src": "icon-192.png",
