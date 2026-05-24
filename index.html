@@ -11,8 +11,16 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
 </script>
+<script>
+window.onload = () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash");
+    if (splash) splash.style.display = "none";
+  }, 800);
+};
+</script>
 <body>
-
+<div id="splash">🧠 LifePlanner</div>
   <div class="container">
     <h1>🧠 LifePlanner</h1>
     <p>Organiza tu día sin estrés</p>
