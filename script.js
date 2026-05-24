@@ -20,7 +20,13 @@ function addTask() {
     event.stopPropagation();
 
     li.classList.toggle("completed");
+const taskList = document.getElementById("taskList");
 
+if (li.classList.contains("completed")) {
+  taskList.appendChild(li);
+} else {
+  taskList.insertBefore(li, taskList.firstChild);
+}
     if (li.classList.contains("completed")) {
       check.textContent = "☑";
       status.textContent = "Completado";
@@ -40,7 +46,13 @@ function addTask() {
     saveTasks();
   });
 
-  document.getElementById("taskList").appendChild(li);
+ const taskList = document.getElementById("taskList");
+
+if (li.classList.contains("completed")) {
+  taskList.appendChild(li);
+} else {
+  taskList.insertBefore(li, taskList.firstChild);
+}
 
   saveTasks();
   input.value = "";
