@@ -119,3 +119,7 @@ document.getElementById("taskInput").addEventListener("keydown", function(event)
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("sw.js");
 }
+window.addEventListener("load", () => {
+  const splash = document.getElementById("splash");
+  if (splash) splash.style.display = "none";
+});
