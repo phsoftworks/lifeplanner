@@ -88,3 +88,6 @@ window.onload = function() {
     document.getElementById("taskList").appendChild(li);
   });
 };
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
