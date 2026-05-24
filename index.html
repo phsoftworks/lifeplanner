@@ -7,28 +7,13 @@
   <link rel="manifest" href="manifest.json">
 </head>
 
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-</script>
-
-<script>
-window.onload = () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splash");
-    if (splash) splash.style.display = "none";
-  }, 800);
-};
-</script>
-
 <body>
 
 <div id="splash">🧠 LifePlanner</div>
 
 <div class="app">
 
-  <!-- SIDEBAR IZQUIERDA -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <h1>🧠 LifePlanner</h1>
     <p>Organiza tu día sin estrés</p>
@@ -39,23 +24,51 @@ window.onload = () => {
     <ul id="taskList"></ul>
   </div>
 
-  <!-- PANEL DERECHO -->
- <div class="main">
+  <!-- MAIN -->
+  <div class="main">
 
-  <h2>📅 Calendario</h2>
+    <h2>📅 Calendario</h2>
 
-  <div class="calendar-header">
-    <button onclick="prevMonth()">◀</button>
-    <h3 id="monthTitle"></h3>
-    <button onclick="nextMonth()">▶</button>
+    <div class="calendar-header">
+      <button onclick="prevMonth()">◀</button>
+      <h3 id="monthTitle"></h3>
+      <button onclick="nextMonth()">▶</button>
+    </div>
+
+    <div id="calendar"></div>
+
+    <!-- 🧠 ESTO ES LO QUE TE FALTABA -->
+    <div id="selectedDayPanel">
+      <h3 id="selectedDayTitle">Selecciona un día</h3>
+
+      <input id="dayTaskInput" placeholder="Nueva tarea para este día...">
+      <button onclick="addTaskToDay()">Añadir</button>
+
+      <ul id="dayTaskList"></ul>
+    </div>
+
   </div>
 
-  <div id="calendar"></div>
-
-</div>
 </div>
 
 <script src="script.js"></script>
+
+<!-- Service worker al final (mejor práctica) -->
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+</script>
+
+<!-- Splash -->
+<script>
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash");
+    if (splash) splash.style.display = "none";
+  }, 800);
+});
+</script>
 
 </body>
 </html>
