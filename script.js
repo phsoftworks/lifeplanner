@@ -6,20 +6,23 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 /* ================= TASKS ================= */
 
 function addTask() {
+
   const input = document.getElementById("taskInput");
+
   if (!input.value) return;
 
+  const newTask = {
+    id: Date.now(),
+    text: input.value,
+    completed: false
+  };
+
   const li = createTaskElement(newTask);
-  
+
   document.getElementById("taskList").appendChild(li);
 
-  const newTask = {
-  id: Date.now(),
-  text: input.value,
-  completed: false
-};
+  tasks.push(newTask);
 
-tasks.push(newTask);
   saveTasks();
 
   input.value = "";
@@ -32,10 +35,13 @@ li.addEventListener("dragstart", (e) => {
   e.dataTransfer.setData("taskId", task.id);
 });
   li.innerHTML = `
-  <span class="check">☐</span>
-${task.text}
-  <span class="task-text"></span>
+ <span class="check">☐</span>
 
+<span class="task-text">${task.text}</span>
+
+<span class="status"></span>
+
+<button class="delete-btn">✖</button>
   <span class="status"></span>
 
   <button class="delete-btn">✖</button>
@@ -87,7 +93,7 @@ function saveTasks() {
 
 /* LOAD TASKS */
 window.addEventListener("load", () => {
-  {renderTaskList();
+  renderTaskList();
 
   renderCalendar();
 });
