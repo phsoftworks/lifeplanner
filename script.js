@@ -33,10 +33,14 @@ li.addEventListener("dragstart", (e) => {
 
   <button class="delete-btn">✖</button>
 `;
-
-  if (completed) li.classList.add("completed");
 const check = li.querySelector(".check");
 const status = li.querySelector(".status");
+
+ if (completed) {
+  li.classList.add("completed");
+  check.textContent = "☑";
+  status.textContent = "Completado";
+}
   check.onclick = () => {
 
   li.classList.toggle("completed");
