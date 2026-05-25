@@ -1,99 +1,73 @@
 let currentDate = new Date();
 let selectedDate = null;
+
 let calendarData = JSON.parse(localStorage.getItem("calendarData")) || {};
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 /* ================= TASKS ================= */
 
 function addTask() {
-
   const input = document.getElementById("taskInput");
-
-  if (!input.value) return;
+  if (!input.value.trim()) return;
 
   const newTask = {
     id: Date.now(),
-    text: input.value,
+    text: input.value.trim(),
     completed: false
   };
 
-  const li = createTaskElement(newTask);
-
-  document.getElementById("taskList").appendChild(li);
-
   tasks.push(newTask);
-
   saveTasks();
+  renderTaskList();
 
   input.value = "";
 }
 
 function createTaskElement(task) {
   const li = document.createElement("li");
-li.draggable = true;
-li.addEventListener("dragstart", (e) => {
-  e.dataTransfer.setData("taskId", task.id);
-});
+  li.draggable = true;
+
+  li.addEventListener("dragstart", (e) => {
+    e.dataTransfer.setData("taskId", task.id);
+  });
+
   li.innerHTML = `
-  <span class="check">☐</span>
+    <span class="check">${task.completed ? "☑" : "☐"}</span>
+    <span class="task-text">${task.text}</span>
+    <button class="delete-btn">✖</button>
+  `;
 
-  <span class="task-text">${task.text}</span>
+  const check = li.querySelector(".check");
 
-  <span class="status"></span>
+  if (task.completed) li.classList.add("completed");
 
-  <button class="delete-btn">✖</button>
-`;
-const check = li.querySelector(".check");
-const status = li.querySelector(".status");
-
- if (task.completed) {
-  li.classList.add("completed");
-  check.textContent = "☑";
-  status.textContent = "Completado";
-}
   check.onclick = () => {
-
-  li.classList.toggle("completed");
-
-  if (li.classList.contains("completed")) {
-    check.textContent = "☑";
-    status.textContent = "Completado";
-  } else {
-    check.textContent = "☐";
-    status.textContent = "";
-  }
-
-  saveTasks();
-};
+    task.completed = !task.completed;
+    saveTasks();
+    renderTaskList();
+  };
 
   li.querySelector(".delete-btn").onclick = () => {
-    li.remove();
+    tasks = tasks.filter(t => t.id !== task.id);
     saveTasks();
+    renderTaskList();
   };
 
   return li;
 }
 
 function saveTasks() {
-  const list = document.querySelectorAll("#taskList li");
-  tasks = [];
-
-  list.forEach(li => {
-    tasks.push({
-      text: li.querySelector(".task-text").textContent,
-      completed: li.classList.contains("completed")
-    });
-  });
-
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-/* LOAD TASKS */
-window.addEventListener("load", () => {
-  renderTaskList();
+function renderTaskList() {
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
 
-  renderCalendar();
-});
+  tasks.forEach(task => {
+    list.appendChild(createTaskElement(task));
+  });
+}
 
 /* ================= CALENDAR ================= */
 
@@ -118,60 +92,126 @@ function renderCalendar() {
     calendar.innerHTML += `<div></div>`;
   }
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   for (let d = 1; d <= days; d++) {
-const today = new Date();
+    const cellDate = new Date(year, month, d);
 
-today.setHours(0,0,0,0);
+    let extraClass = "";
+    if (cellDate.getTime() === today.getTime()) extraClass = "today";
+    else if (cellDate < today) extraClass = "past-day";
 
-const cellDate = new Date(year, month, d);
+    const key = `${year}-${month + 1}-${d}`;
+    const dayTasks = calendarData[key] || [];
 
-let extraClass = "";
+    calendar.innerHTML += `
+      <div class="day ${extraClass}"
+        onclick="selectDay(${d})"
+        ondragover="allowDrop(event)"
+        ondrop="dropTask(event, ${d})">
 
-if (cellDate.getTime() === today.getTime()) {
-  extraClass = "today";
-}
-else if (cellDate < today) {
-  extraClass = "past-day";
-}
-  const key = `${year}-${month + 1}-${d}`;
-  const dayTasks = calendarData[key] || [];
+        <div class="day-number">${d}</div>
 
-  calendar.innerHTML += `
-    <div 
-      class="day ${extraClass}"
-      onclick="selectDay(${d})"
-      ondragover="allowDrop(event)"
-      ondrop="dropTask(event, ${d})"
-    >
-      <div class="day-number">${d}</div>
+        <div class="calendar-tasks">
+          ${dayTasks
+            .map(
+              (t, i) => `
+              <div class="mini-task ${t.completed ? "completed-mini" : ""}">
+                <span onclick="toggleCalendarTask('${key}', ${i})">
+                  ${t.completed ? "☑" : "☐"} ${t.text}
+                </span>
 
-      <div class="calendar-tasks">
-       ${dayTasks.map((task, index) => `
+                <button onclick="deleteCalendarTask('${key}', ${i})">
+                  ✖
+                </button>
+              </div>
+            `
+            )
+            .join("")}
+        </div>
 
-  <div class="mini-task ${task.completed ? "completed-mini" : ""}">
-
-    <span 
-      onclick="toggleCalendarTask('${key}', ${index})"
-    >
-      ${task.completed ? "☑" : "☐"} ${task.text}
-    </span>
-
-    <button
-      class="mini-delete"
-      onclick="deleteCalendarTask('${key}', ${index})"
-    >
-      ✖
-    </button>
-
-  </div>
-
-`).join("")}
       </div>
-
-    </div>
     `;
   }
 }
+
+/* ================= CALENDAR ACTIONS ================= */
+
+function selectDay(day) {
+  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+  selectedDate = key;
+
+  document.getElementById("selectedDayTitle").textContent =
+    `Tareas del día ${day}`;
+}
+
+function addTaskToDay() {
+  const input = document.getElementById("dayTaskInput");
+  if (!selectedDate || !input.value.trim()) return;
+
+  if (!calendarData[selectedDate]) {
+    calendarData[selectedDate] = [];
+  }
+
+  calendarData[selectedDate].push({
+    text: input.value.trim(),
+    completed: false
+  });
+
+  saveCalendar();
+  renderCalendar();
+
+  input.value = "";
+}
+
+function deleteCalendarTask(key, index) {
+  calendarData[key].splice(index, 1);
+  saveCalendar();
+  renderCalendar();
+}
+
+function toggleCalendarTask(key, index) {
+  calendarData[key][index].completed =
+    !calendarData[key][index].completed;
+
+  saveCalendar();
+  renderCalendar();
+}
+
+function saveCalendar() {
+  localStorage.setItem("calendarData", JSON.stringify(calendarData));
+}
+
+/* ================= DRAG & DROP ================= */
+
+function allowDrop(e) {
+  e.preventDefault();
+}
+
+function dropTask(e, day) {
+  e.preventDefault();
+
+  const taskId = Number(e.dataTransfer.getData("taskId"));
+  const task = tasks.find(t => t.id === taskId);
+  if (!task) return;
+
+  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+
+  if (!calendarData[key]) calendarData[key] = [];
+
+  calendarData[key].push(task);
+
+  tasks = tasks.filter(t => t.id !== taskId);
+
+  saveTasks();
+  saveCalendar();
+
+  renderTaskList();
+  renderCalendar();
+}
+
+/* ================= NAV ================= */
 
 function prevMonth() {
   currentDate.setMonth(currentDate.getMonth() - 1);
@@ -183,69 +223,11 @@ function nextMonth() {
   renderCalendar();
 }
 
-function selectDay(day) {
-  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
-  selectedDate = key;
+/* ================= INIT ================= */
 
-  document.getElementById("selectedDayTitle").textContent =
-    `Tareas del día ${day}`;
-}
-
-/* ================= CALENDAR TASKS ================= */
-
-function addTaskToDay() {
-  const input = document.getElementById("dayTaskInput");
-  if (!selectedDate || !input.value) return;
-
-  if (!calendarData[selectedDate]) {
-    calendarData[selectedDate] = [];
-  }
-
-  calendarData[selectedDate].push({
-  text: input.value,
-  completed: false
-});
-  localStorage.setItem("calendarData", JSON.stringify(calendarData));
-
-renderCalendar();
-
-input.value = "";
-}
-
-function allowDrop(e) {
-  e.preventDefault();
-}
-
-function dropTask(e, day) {
-  e.preventDefault();
-
- const taskId = Number(
-  e.dataTransfer.getData("taskId")
-);
-const task = tasks.find(t => t.id === taskId);
-
-if (!task) return;
-
-  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
-
-  if (!calendarData[key]) {
-    calendarData[key] = [];
-  }
-
-calendarData[key].push({
-  text: task.text,
-  completed: task.completed
-});
- tasks = tasks.filter(t => t.id !== taskId);
-
-saveTasks();
-
-  localStorage.setItem("calendarData", JSON.stringify(calendarData));
-
-  renderCalendar();
-  renderTaskList();
-}
 window.addEventListener("load", () => {
+  renderTaskList();
+  renderCalendar();
 
   document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
@@ -254,42 +236,4 @@ window.addEventListener("load", () => {
   document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTaskToDay();
   });
-
-  renderTaskList();
-  renderCalendar();
 });
-function deleteCalendarTask(key, index) {
-
-  calendarData[key].splice(index, 1);
-
-  localStorage.setItem(
-    "calendarData",
-    JSON.stringify(calendarData)
-  );
-
-  renderCalendar();
-}
-function toggleCalendarTask(key, index) {
-
-  calendarData[key][index].completed =
-    !calendarData[key][index].completed;
-
-  localStorage.setItem(
-    "calendarData",
-    JSON.stringify(calendarData)
-  );
-
-  renderCalendar();
-}
-function renderTaskList() {
-
-  const list = document.getElementById("taskList");
-
-  list.innerHTML = "";
-
-  tasks.forEach(task => {
-    list.appendChild(
-      createTaskElement(task)
-    );
-  });
-}
