@@ -127,9 +127,20 @@ function renderCalendar() {
       <div class="day-number">${d}</div>
 
       <div class="calendar-tasks">
-        ${dayTasks.map(task => `
-          <div class="mini-task">${task}</div>
-        `).join("")}
+        ${dayTasks.map((task, index) => `
+  <div class="mini-task">
+
+    <span>${task}</span>
+
+    <button 
+      class="mini-delete"
+      onclick="deleteCalendarTask('${key}', ${index})"
+    >
+      ✖
+    </button>
+
+  </div>
+`).join("")}
       </div>
 
     </div>
