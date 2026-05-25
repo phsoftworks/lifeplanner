@@ -93,8 +93,28 @@ function renderCalendar() {
   }
 
   for (let d = 1; d <= days; d++) {
-    calendar.innerHTML += `
-      <div class="day" onclick="selectDay(${d})">
+   const key = `${year}-${month + 1}-${d}`;
+const dayTasks = calendarData[key] || [];
+
+calendar.innerHTML += `
+  <div 
+    class="day"
+    onclick="selectDay(${d})"
+    ondragover="allowDrop(event)"
+    ondrop="dropTask(event, ${d})"
+  >
+    <div class="day-number">${d}</div>
+
+    <div class="calendar-tasks">
+      ${dayTasks.map(task => `
+        <div class="mini-task">${task}</div>
+      `).join("")}
+    </div>
+  </div>
+`;
+  ondragover="allowDrop(event)"
+  ondrop="dropTask(event, ${d})"
+>
         ${d}
       </div>
     `;
@@ -133,4 +153,25 @@ function addTaskToDay() {
   localStorage.setItem("calendarData", JSON.stringify(calendarData));
 
   input.value = "";
+}
+function allowDrop(e) {
+  e.preventDefault();
+}
+
+function dropTask(e, day) {
+  e.preventDefault();
+
+  const taskText = e.dataTransfer.getData("text");
+
+  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+
+  if (!calendarData[key]) {
+    calendarData[key] = [];
+  }
+
+  calendarData[key].push(taskText);
+
+  localStorage.setItem("calendarData", JSON.stringify(calendarData));
+
+  renderCalendar();
 }
