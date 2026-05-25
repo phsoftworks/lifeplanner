@@ -147,3 +147,17 @@ li {
   border: 2px solid #4CAF50;
   box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
+.completed-mini span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.past-day {
+  opacity: 0.45;
+  background: #dcdcdc;
+}
+
+.today {
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 10px rgba(76,175,80,0.5);
+}

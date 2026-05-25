@@ -115,16 +115,16 @@ function renderCalendar() {
   for (let d = 1; d <= days; d++) {
 const today = new Date();
 
+today.setHours(0,0,0,0);
+
 const cellDate = new Date(year, month, d);
 
 let extraClass = "";
 
-if (
-  cellDate.toDateString() === today.toDateString()
-) {
+if (cellDate.getTime() === today.getTime()) {
   extraClass = "today";
 }
-else if (cellDate < today.setHours(0,0,0,0)) {
+else if (cellDate < today) {
   extraClass = "past-day";
 }
   const key = `${year}-${month + 1}-${d}`;
@@ -140,12 +140,17 @@ else if (cellDate < today.setHours(0,0,0,0)) {
       <div class="day-number">${d}</div>
 
       <div class="calendar-tasks">
-        ${dayTasks.map((task, index) => `
-  <div class="mini-task">
+       ${dayTasks.map((task, index) => `
 
-    <span>${task}</span>
+  <div class="mini-task ${task.completed ? "completed-mini" : ""}">
 
-    <button 
+    <span 
+      onclick="toggleCalendarTask('${key}', ${index})"
+    >
+      ${task.completed ? "☑" : "☐"} ${task.text}
+    </span>
+
+    <button
       class="mini-delete"
       onclick="deleteCalendarTask('${key}', ${index})"
     >
@@ -153,6 +158,7 @@ else if (cellDate < today.setHours(0,0,0,0)) {
     </button>
 
   </div>
+
 `).join("")}
       </div>
 
@@ -189,7 +195,10 @@ function addTaskToDay() {
     calendarData[selectedDate] = [];
   }
 
-  calendarData[selectedDate].push(input.value);
+  calendarData[selectedDate].push({
+  text: input.value,
+  completed: false
+});
   localStorage.setItem("calendarData", JSON.stringify(calendarData));
 
 renderCalendar();
@@ -212,7 +221,10 @@ function dropTask(e, day) {
     calendarData[key] = [];
   }
 
-  calendarData[key].push(taskText);
+ calendarData[key].push({
+  text: taskText,
+  completed: false
+});
 
   localStorage.setItem("calendarData", JSON.stringify(calendarData));
 
@@ -232,6 +244,18 @@ document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
 function deleteCalendarTask(key, index) {
 
   calendarData[key].splice(index, 1);
+
+  localStorage.setItem(
+    "calendarData",
+    JSON.stringify(calendarData)
+  );
+
+  renderCalendar();
+}
+function toggleCalendarTask(key, index) {
+
+  calendarData[key][index].completed =
+    !calendarData[key][index].completed;
 
   localStorage.setItem(
     "calendarData",
