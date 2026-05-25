@@ -9,25 +9,32 @@ function addTask() {
   const input = document.getElementById("taskInput");
   if (!input.value) return;
 
-  const li = createTaskElement(input.value);
+  const li = createTaskElement(newTask);
+  
   document.getElementById("taskList").appendChild(li);
 
-  tasks.push({ text: input.value, completed: false });
+  const newTask = {
+  id: Date.now(),
+  text: input.value,
+  completed: false
+};
+
+tasks.push(newTask);
   saveTasks();
 
   input.value = "";
 }
 
-function createTaskElement(text, completed = false) {
+function createTaskElement(task) {
   const li = document.createElement("li");
 li.draggable = true;
 li.addEventListener("dragstart", (e) => {
-  e.dataTransfer.setData("text", text);
+  e.dataTransfer.setData("taskId", task.id);
 });
   li.innerHTML = `
   <span class="check">☐</span>
-
-  <span class="task-text">${text}</span>
+${task.text}
+  <span class="task-text"></span>
 
   <span class="status"></span>
 
@@ -36,7 +43,7 @@ li.addEventListener("dragstart", (e) => {
 const check = li.querySelector(".check");
 const status = li.querySelector(".status");
 
- if (completed) {
+ if (task.completed) {
   li.classList.add("completed");
   check.textContent = "☑";
   status.textContent = "Completado";
@@ -80,11 +87,7 @@ function saveTasks() {
 
 /* LOAD TASKS */
 window.addEventListener("load", () => {
-  tasks.forEach(t => {
-    document.getElementById("taskList").appendChild(
-      createTaskElement(t.text, t.completed)
-    );
-  });
+  {renderTaskList();
 
   renderCalendar();
 });
@@ -213,7 +216,12 @@ function allowDrop(e) {
 function dropTask(e, day) {
   e.preventDefault();
 
-  const taskText = e.dataTransfer.getData("text");
+ const taskId = Number(
+  e.dataTransfer.getData("taskId")
+);
+const task = tasks.find(t => t.id === taskId);
+
+if (!task) return;
 
   const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
 
@@ -221,14 +229,15 @@ function dropTask(e, day) {
     calendarData[key] = [];
   }
 
- calendarData[key].push({
-  text: taskText,
-  completed: false
-});
+ calendarData[key].push(task);
+ tasks = tasks.filter(t => t.id !== taskId);
+
+saveTasks();
 
   localStorage.setItem("calendarData", JSON.stringify(calendarData));
 
   renderCalendar();
+  renderTaskList();
 }
 document.getElementById("taskInput").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
@@ -263,4 +272,16 @@ function toggleCalendarTask(key, index) {
   );
 
   renderCalendar();
+}
+function renderTaskList() {
+
+  const list = document.getElementById("taskList");
+
+  list.innerHTML = "";
+
+  tasks.forEach(task => {
+    list.appendChild(
+      createTaskElement(task)
+    );
+  });
 }
