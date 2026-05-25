@@ -115,6 +115,7 @@ function renderCalendar() {
     </div>
   `;
 }
+}
 function prevMonth() {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
