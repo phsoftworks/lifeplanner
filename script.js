@@ -35,13 +35,10 @@ li.addEventListener("dragstart", (e) => {
   e.dataTransfer.setData("taskId", task.id);
 });
   li.innerHTML = `
- <span class="check">☐</span>
+  <span class="check">☐</span>
 
-<span class="task-text">${task.text}</span>
+  <span class="task-text">${task.text}</span>
 
-<span class="status"></span>
-
-<button class="delete-btn">✖</button>
   <span class="status"></span>
 
   <button class="delete-btn">✖</button>
@@ -251,10 +248,18 @@ document.getElementById("taskInput").addEventListener("keydown", (e) => {
   }
 });
 
-document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addTaskToDay();
-  }
+window.addEventListener("load", () => {
+
+  document.getElementById("taskInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") addTask();
+  });
+
+  document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") addTaskToDay();
+  });
+
+  renderTaskList();
+  renderCalendar();
 });
 function deleteCalendarTask(key, index) {
 
