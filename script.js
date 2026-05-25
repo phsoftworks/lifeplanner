@@ -93,34 +93,28 @@ function renderCalendar() {
   }
 
   for (let d = 1; d <= days; d++) {
-   const key = `${year}-${month + 1}-${d}`;
-const dayTasks = calendarData[key] || [];
 
-calendar.innerHTML += `
-  <div 
-    class="day"
-    onclick="selectDay(${d})"
-    ondragover="allowDrop(event)"
-    ondrop="dropTask(event, ${d})"
-  >
-    <div class="day-number">${d}</div>
+  const key = `${year}-${month + 1}-${d}`;
+  const dayTasks = calendarData[key] || [];
 
-    <div class="calendar-tasks">
-      ${dayTasks.map(task => `
-        <div class="mini-task">${task}</div>
-      `).join("")}
-    </div>
-  </div>
-`;
-  ondragover="allowDrop(event)"
-  ondrop="dropTask(event, ${d})"
->
-        ${d}
+  calendar.innerHTML += `
+    <div 
+      class="day"
+      onclick="selectDay(${d})"
+      ondragover="allowDrop(event)"
+      ondrop="dropTask(event, ${d})"
+    >
+      <div class="day-number">${d}</div>
+
+      <div class="calendar-tasks">
+        ${dayTasks.map(task => `
+          <div class="mini-task">${task}</div>
+        `).join("")}
       </div>
-    `;
-  }
-}
 
+    </div>
+  `;
+}
 function prevMonth() {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
