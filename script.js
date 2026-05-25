@@ -245,14 +245,9 @@ saveTasks();
   renderCalendar();
   renderTaskList();
 }
-document.getElementById("taskInput").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    addTask();
-  }
-});
+window.addEventListener("load", () => {
 
- 
-document.getElementById("taskInput").addEventListener("keydown", (e) => {
+  document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
   });
 
