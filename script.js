@@ -20,7 +20,10 @@ function addTask() {
 
 function createTaskElement(text, completed = false) {
   const li = document.createElement("li");
-
+li.draggable = true;
+li.addEventListener("dragstart", (e) => {
+  e.dataTransfer.setData("text", text);
+});
   li.innerHTML = `
     <span class="task-text">${text}</span>
     <button class="delete-btn">❌</button>
