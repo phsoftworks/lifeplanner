@@ -232,7 +232,10 @@ if (!task) return;
     calendarData[key] = [];
   }
 
- calendarData[key].push(task);
+calendarData[key].push({
+  text: task.text,
+  completed: task.completed
+});
  tasks = tasks.filter(t => t.id !== taskId);
 
 saveTasks();
@@ -248,9 +251,8 @@ document.getElementById("taskInput").addEventListener("keydown", (e) => {
   }
 });
 
-window.addEventListener("load", () => {
-
-  document.getElementById("taskInput").addEventListener("keydown", (e) => {
+ 
+document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
   });
 
