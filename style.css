@@ -138,3 +138,12 @@ li {
   cursor: pointer;
   font-size: 12px;
 }
+.past-day {
+  opacity: 0.45;
+  background: #e0e0e0;
+}
+
+.today {
+  border: 2px solid #4CAF50;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}

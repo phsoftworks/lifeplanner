@@ -113,13 +113,26 @@ function renderCalendar() {
   }
 
   for (let d = 1; d <= days; d++) {
+const today = new Date();
 
+const cellDate = new Date(year, month, d);
+
+let extraClass = "";
+
+if (
+  cellDate.toDateString() === today.toDateString()
+) {
+  extraClass = "today";
+}
+else if (cellDate < today.setHours(0,0,0,0)) {
+  extraClass = "past-day";
+}
   const key = `${year}-${month + 1}-${d}`;
   const dayTasks = calendarData[key] || [];
 
   calendar.innerHTML += `
     <div 
-      class="day"
+      class="day ${extraClass}"
       onclick="selectDay(${d})"
       ondragover="allowDrop(event)"
       ondrop="dropTask(event, ${d})"
