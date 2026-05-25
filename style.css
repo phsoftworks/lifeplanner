@@ -118,3 +118,23 @@ li {
   border-radius: 6px;
   font-size: 11px;
 }
+.mini-task {
+  background: #4CAF50;
+  color: white;
+  padding: 5px 8px;
+  border-radius: 6px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 5px;
+}
+
+.mini-delete {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+}

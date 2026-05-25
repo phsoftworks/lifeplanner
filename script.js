@@ -216,3 +216,14 @@ document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
     addTaskToDay();
   }
 });
+function deleteCalendarTask(key, index) {
+
+  calendarData[key].splice(index, 1);
+
+  localStorage.setItem(
+    "calendarData",
+    JSON.stringify(calendarData)
+  );
+
+  renderCalendar();
+}
