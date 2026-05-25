@@ -25,16 +25,32 @@ li.addEventListener("dragstart", (e) => {
   e.dataTransfer.setData("text", text);
 });
   li.innerHTML = `
-    <span class="task-text">${text}</span>
-    <button class="delete-btn">❌</button>
-  `;
+  <span class="check">☐</span>
+
+  <span class="task-text">${text}</span>
+
+  <span class="status"></span>
+
+  <button class="delete-btn">✖</button>
+`;
 
   if (completed) li.classList.add("completed");
+const check = li.querySelector(".check");
+const status = li.querySelector(".status");
+  check.onclick = () => {
 
-  li.querySelector(".task-text").onclick = () => {
-    li.classList.toggle("completed");
-    saveTasks();
-  };
+  li.classList.toggle("completed");
+
+  if (li.classList.contains("completed")) {
+    check.textContent = "☑";
+    status.textContent = "Completado";
+  } else {
+    check.textContent = "☐";
+    status.textContent = "";
+  }
+
+  saveTasks();
+};
 
   li.querySelector(".delete-btn").onclick = () => {
     li.remove();
@@ -148,8 +164,11 @@ function addTaskToDay() {
   calendarData[selectedDate].push(input.value);
   localStorage.setItem("calendarData", JSON.stringify(calendarData));
 
-  input.value = "";
+renderCalendar();
+
+input.value = "";
 }
+
 function allowDrop(e) {
   e.preventDefault();
 }
@@ -171,3 +190,14 @@ function dropTask(e, day) {
 
   renderCalendar();
 }
+document.getElementById("taskInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addTask();
+  }
+});
+
+document.getElementById("dayTaskInput").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    addTaskToDay();
+  }
+});
