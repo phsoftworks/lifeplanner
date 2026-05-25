@@ -87,3 +87,32 @@ li {
   justify-content: center;
   font-size: 30px;
 }
+.day {
+  background: white;
+  border-radius: 10px;
+  min-height: 100px;
+  padding: 8px;
+  border: 1px solid #ddd;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.day-number {
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.calendar-tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-task {
+  background: #4CAF50;
+  color: white;
+  padding: 4px 6px;
+  border-radius: 6px;
+  font-size: 11px;
+}
