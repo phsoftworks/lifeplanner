@@ -127,12 +127,25 @@ function renderCalendar() {
 
         <div class="calendar-tasks">
           ${dayTasks.map(t => `
-            <div class="mini-task ${t.completed ? "completed-mini" : ""}">
-              <span onclick="toggleTask(${t.id})">
-                ${t.completed ? "☑" : "☐"} ${t.text}
-              </span>
-            </div>
-          `).join("")}
+  <div 
+    class="mini-task ${t.completed ? "completed-mini" : ""}"
+    draggable="true"
+    ondragstart="startCalendarDrag(event, ${t.id})"
+  >
+
+    <span onclick="toggleTask(${t.id})">
+      ${t.completed ? "☑" : "☐"} ${t.text}
+    </span>
+
+    <button 
+      class="mini-delete"
+      onclick="deleteTask(${t.id})"
+    >
+      ✖
+    </button>
+
+  </div>
+`).join("")}
         </div>
 
       </div>
@@ -173,7 +186,9 @@ function addTaskToDay() {
 function allowDrop(e) {
   e.preventDefault();
 }
-
+function startCalendarDrag(e, taskId) {
+  e.dataTransfer.setData("taskId", taskId);
+}
 function dropTask(e, dateKey) {
   e.preventDefault();
 
