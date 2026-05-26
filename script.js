@@ -230,3 +230,6 @@ window.addEventListener("load", () => {
     if (e.key === "Enter") addTaskToDay();
   });
 });
+new Sortable(taskList, {
+  animation: 150
+});
