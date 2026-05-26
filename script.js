@@ -25,6 +25,7 @@ function addTask() {
   save();
   renderTaskList();
   renderCalendar();
+  setTimeout(initSortable, 0);
   input.value = "";
 }
 
@@ -37,6 +38,7 @@ function toggleTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+  setTimeout(initSortable, 0);
 }
 
 function deleteTask(id) {
@@ -45,12 +47,13 @@ function deleteTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+  setTimeout(initSortable, 0);
 }
 
 function createTaskElement(task) {
   const li = document.createElement("li");
   li.draggable = true;
-
+li.dataset.id = task.id;
   li.addEventListener("dragstart", (e) => {
     e.dataTransfer.setData("taskId", task.id);
   });
@@ -125,7 +128,7 @@ function renderCalendar() {
 
         <div class="day-number">${d}</div>
 
-        <div class="calendar-tasks">
+        <div class="calendar-tasks" id="day-${key}">
           ${dayTasks.map(t => `
   <div 
     class="mini-task ${t.completed ? "completed-mini" : ""}"
@@ -177,7 +180,7 @@ function addTaskToDay() {
   save();
   renderTaskList();
   renderCalendar();
-
+setTimeout(initSortable, 0);
   input.value = "";
 }
 
@@ -202,6 +205,7 @@ function dropTask(e, dateKey) {
   save();
   renderTaskList();
   renderCalendar();
+  setTimeout(initSortable, 0);
 }
 
 /* ================= NAV ================= */
@@ -209,11 +213,13 @@ function dropTask(e, dateKey) {
 function prevMonth() {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
+  setTimeout(initSortable, 0);
 }
 
 function nextMonth() {
   currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
+  setTimeout(initSortable, 0);
 }
 
 /* ================= INIT ================= */
@@ -221,7 +227,8 @@ function nextMonth() {
 window.addEventListener("load", () => {
   renderTaskList();
   renderCalendar();
-
+  setTimeout(initSortable, 0);
+initSortable();
   document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
   });
@@ -233,3 +240,39 @@ window.addEventListener("load", () => {
 new Sortable(taskList, {
   animation: 150
 });
+function initSortable() {
+
+  // LISTA PRINCIPAL
+  new Sortable(taskList, {
+    animation: 150,
+    group: "tasks"
+  });
+
+  // CALENDARIO
+  document.querySelectorAll(".calendar-tasks").forEach(el => {
+
+    new Sortable(el, {
+      animation: 150,
+      group: "tasks",
+
+      onAdd: function (evt) {
+
+        const taskId = Number(evt.item.dataset.id);
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) return;
+
+        // guardar fecha del día donde cae
+        task.date = evt.to.id.replace("day-", "");
+
+        save();
+        renderTaskList();
+        renderCalendar();
+setTimeout(initSortable, 0);
+        setTimeout(initSortable, 0);
+      }
+    });
+
+  });
+
+}
