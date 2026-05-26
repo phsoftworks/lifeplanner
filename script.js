@@ -25,7 +25,9 @@ function addTask() {
   save();
   renderTaskList();
   renderCalendar();
+
   setTimeout(initSortable, 0);
+
   input.value = "";
 }
 
@@ -38,6 +40,7 @@ function toggleTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+
   setTimeout(initSortable, 0);
 }
 
@@ -47,16 +50,15 @@ function deleteTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+
   setTimeout(initSortable, 0);
 }
 
 function createTaskElement(task) {
   const li = document.createElement("li");
+
+  li.dataset.id = task.id;
   li.draggable = true;
-li.dataset.id = task.id;
-  li.addEventListener("dragstart", (e) => {
-    e.dataTransfer.setData("taskId", task.id);
-  });
 
   li.innerHTML = `
     <span class="check">${task.completed ? "☑" : "☐"}</span>
@@ -71,21 +73,13 @@ li.dataset.id = task.id;
 
   return li;
 }
-li.addEventListener("dragstart", (e) => {
-  li.classList.add("dragging");
-  e.dataTransfer.setData("taskId", task.id);
-});
-
-li.addEventListener("dragend", () => {
-  li.classList.remove("dragging");
-});
 
 function renderTaskList() {
   const list = document.getElementById("taskList");
   list.innerHTML = "";
 
   tasks
-    .filter(t => !t.date) // SOLO tareas sin fecha
+    .filter(t => !t.date)
     .forEach(task => {
       list.appendChild(createTaskElement(task));
     });
@@ -125,37 +119,19 @@ function renderCalendar() {
     else if (cellDate < today) extraClass = "past-day";
 
     const key = `${year}-${month + 1}-${d}`;
-
     const dayTasks = tasks.filter(t => t.date === key);
 
     calendar.innerHTML += `
       <div class="day ${extraClass}"
-  onclick="selectDay(${d})"
-  ondragover="allowDrop(event)"
-  ondragenter="this.classList.add('drag-over')"
-  ondragleave="this.classList.remove('drag-over')"
-  ondrop="dropTask(event, '${key}')">
+        onclick="selectDay(${d})"
+        ondragover="allowDrop(event)"
+        ondragenter="this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="dropTask(event, '${key}')">
 
-    class="mini-task ${t.completed ? "completed-mini" : ""}"
-    draggable="true"
-    ondragstart="startCalendarDrag(event, ${t.id})"
-  >
+        <div class="day-number">${d}</div>
 
-    <span onclick="toggleTask(${t.id})">
-      ${t.completed ? "☑" : "☐"} ${t.text}
-    </span>
-
-    <button 
-      class="mini-delete"
-      onclick="deleteTask(${t.id})"
-    >
-      ✖
-    </button>
-
-  </div>
-`).join("")}
-        </div>
-
+        <div class="calendar-tasks"></div>
       </div>
     `;
   }
@@ -185,7 +161,9 @@ function addTaskToDay() {
   save();
   renderTaskList();
   renderCalendar();
-setTimeout(initSortable, 0);
+
+  setTimeout(initSortable, 0);
+
   input.value = "";
 }
 
@@ -194,9 +172,7 @@ setTimeout(initSortable, 0);
 function allowDrop(e) {
   e.preventDefault();
 }
-function startCalendarDrag(e, taskId) {
-  e.dataTransfer.setData("taskId", taskId);
-}
+
 function dropTask(e, dateKey) {
   e.preventDefault();
 
@@ -210,11 +186,50 @@ function dropTask(e, dateKey) {
   save();
   renderTaskList();
   renderCalendar();
+
+  document.querySelectorAll(".day").forEach(d => {
+    d.classList.remove("drag-over");
+  });
+
   setTimeout(initSortable, 0);
 }
-  document.querySelectorAll(".day").forEach(d => {
-  d.classList.remove("drag-over");
-});
+
+/* ================= SORTABLE ================= */
+
+function initSortable() {
+  const taskList = document.getElementById("taskList");
+
+  new Sortable(taskList, {
+    animation: 150,
+    group: "tasks"
+  });
+
+  document.querySelectorAll(".calendar-tasks").forEach(el => {
+    new Sortable(el, {
+      animation: 150,
+      group: "tasks",
+
+      onAdd: function (evt) {
+        const taskId = Number(evt.item.dataset.id);
+        const task = tasks.find(t => t.id === taskId);
+
+        if (!task) return;
+
+        const day = evt.to.closest(".day");
+        const dayNumber = Array.from(document.querySelectorAll(".day")).indexOf(day);
+
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+
+        task.date = `${year}-${month}-${dayNumber + 1}`;
+
+        save();
+        renderTaskList();
+        renderCalendar();
+      }
+    });
+  });
+}
 
 /* ================= NAV ================= */
 
@@ -235,8 +250,9 @@ function nextMonth() {
 window.addEventListener("load", () => {
   renderTaskList();
   renderCalendar();
+
   setTimeout(initSortable, 0);
-initSortable();
+
   document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
   });
@@ -245,42 +261,3 @@ initSortable();
     if (e.key === "Enter") addTaskToDay();
   });
 });
-new Sortable(taskList, {
-  animation: 150
-});
-function initSortable() {
-
-  // LISTA PRINCIPAL
-  new Sortable(taskList, {
-    animation: 150,
-    group: "tasks"
-  });
-
-  // CALENDARIO
-  document.querySelectorAll(".calendar-tasks").forEach(el => {
-
-    new Sortable(el, {
-      animation: 150,
-      group: "tasks",
-
-      onAdd: function (evt) {
-
-        const taskId = Number(evt.item.dataset.id);
-        const task = tasks.find(t => t.id === taskId);
-
-        if (!task) return;
-
-        // guardar fecha del día donde cae
-        task.date = evt.to.id.replace("day-", "");
-
-        save();
-        renderTaskList();
-        renderCalendar();
-setTimeout(initSortable, 0);
-        setTimeout(initSortable, 0);
-      }
-    });
-
-  });
-
-}
