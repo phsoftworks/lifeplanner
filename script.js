@@ -13,22 +13,21 @@ function save() {
 
 function addTask() {
   const input = document.getElementById("taskInput");
-  if (!input.value.trim()) return;
+  const text = input.value.trim();
+
+  if (!text) return;
 
   tasks.push({
     id: Date.now(),
-    text: input.value.trim(),
+    text,
     completed: false,
     date: null
   });
 
+  input.value = "";
   save();
   renderTaskList();
   renderCalendar();
-
-  setTimeout(initSortable, 0);
-
-  input.value = "";
 }
 
 function toggleTask(id) {
@@ -40,8 +39,6 @@ function toggleTask(id) {
   save();
   renderTaskList();
   renderCalendar();
-
-  setTimeout(initSortable, 0);
 }
 
 function deleteTask(id) {
@@ -50,15 +47,12 @@ function deleteTask(id) {
   save();
   renderTaskList();
   renderCalendar();
-
-  setTimeout(initSortable, 0);
 }
+
+/* ================= RENDER TASK LIST ================= */
 
 function createTaskElement(task) {
   const li = document.createElement("li");
-
-  li.dataset.id = task.id;
-  li.draggable = true;
 
   li.innerHTML = `
     <span class="check">${task.completed ? "☑" : "☐"}</span>
@@ -119,29 +113,37 @@ function renderCalendar() {
     else if (cellDate < today) extraClass = "past-day";
 
     const key = `${year}-${month + 1}-${d}`;
+
     const dayTasks = tasks.filter(t => t.date === key);
 
     calendar.innerHTML += `
-      <div class="day ${extraClass}"
-        onclick="selectDay(${d})"
-        ondragover="allowDrop(event)"
-        ondragenter="this.classList.add('drag-over')"
-        ondragleave="this.classList.remove('drag-over')"
-        ondrop="dropTask(event, '${key}')">
+      <div class="day ${extraClass}" onclick="selectDay('${key}')">
 
         <div class="day-number">${d}</div>
 
-        <div class="calendar-tasks"></div>
+        <div class="calendar-tasks">
+          ${dayTasks.map(t => `
+            <div class="mini-task ${t.completed ? "completed-mini" : ""}">
+              <span onclick="toggleTask(${t.id})">
+                ${t.completed ? "☑" : "☐"} ${t.text}
+              </span>
+
+              <button onclick="deleteTask(${t.id})">✖</button>
+            </div>
+          `).join("")}
+        </div>
+
       </div>
     `;
   }
 }
 
-/* ================= CALENDAR ACTIONS ================= */
+/* ================= DAY ACTIONS ================= */
 
-function selectDay(day) {
-  const key = `${currentDate.getFullYear()}-${currentDate.getMonth() + 1}-${day}`;
+function selectDay(key) {
   selectedDate = key;
+
+  const day = key.split("-")[2];
 
   document.getElementById("selectedDayTitle").textContent =
     `Tareas del día ${day}`;
@@ -149,100 +151,33 @@ function selectDay(day) {
 
 function addTaskToDay() {
   const input = document.getElementById("dayTaskInput");
-  if (!input.value.trim() || !selectedDate) return;
+  const text = input.value.trim();
+
+  if (!text || !selectedDate) return;
 
   tasks.push({
     id: Date.now(),
-    text: input.value.trim(),
+    text,
     completed: false,
     date: selectedDate
   });
 
-  save();
-  renderTaskList();
-  renderCalendar();
-
-  setTimeout(initSortable, 0);
-
   input.value = "";
-}
-
-/* ================= DRAG & DROP ================= */
-
-function allowDrop(e) {
-  e.preventDefault();
-}
-
-function dropTask(e, dateKey) {
-  e.preventDefault();
-
-  const taskId = Number(e.dataTransfer.getData("taskId"));
-  const task = tasks.find(t => t.id === taskId);
-
-  if (!task) return;
-
-  task.date = dateKey;
-
   save();
   renderTaskList();
   renderCalendar();
-
-  document.querySelectorAll(".day").forEach(d => {
-    d.classList.remove("drag-over");
-  });
-
-  setTimeout(initSortable, 0);
 }
 
-/* ================= SORTABLE ================= */
-
-function initSortable() {
-  const taskList = document.getElementById("taskList");
-
-  new Sortable(taskList, {
-    animation: 150,
-    group: "tasks"
-  });
-
-  document.querySelectorAll(".calendar-tasks").forEach(el => {
-    new Sortable(el, {
-      animation: 150,
-      group: "tasks",
-
-      onAdd: function (evt) {
-        const taskId = Number(evt.item.dataset.id);
-        const task = tasks.find(t => t.id === taskId);
-
-        if (!task) return;
-
-        const day = evt.to.closest(".day");
-        const dayNumber = Array.from(document.querySelectorAll(".day")).indexOf(day);
-
-        const year = currentDate.getFullYear();
-        const month = currentDate.getMonth() + 1;
-
-        task.date = `${year}-${month}-${dayNumber + 1}`;
-
-        save();
-        renderTaskList();
-        renderCalendar();
-      }
-    });
-  });
-}
-
-/* ================= NAV ================= */
+/* ================= MONTH NAV ================= */
 
 function prevMonth() {
   currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
-  setTimeout(initSortable, 0);
 }
 
 function nextMonth() {
   currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
-  setTimeout(initSortable, 0);
 }
 
 /* ================= INIT ================= */
@@ -250,8 +185,6 @@ function nextMonth() {
 window.addEventListener("load", () => {
   renderTaskList();
   renderCalendar();
-
-  setTimeout(initSortable, 0);
 
   document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();

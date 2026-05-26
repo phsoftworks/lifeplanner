@@ -1,44 +1,42 @@
 /* ================= RESET ================= */
 
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
 body {
+  margin: 0;
   font-family: system-ui, Arial, sans-serif;
-  background: #f1f5f9;
+  background: #f4f6fb;
   color: #111827;
-  line-height: 1.4;
 }
 
-/* ================= CONTAINER ================= */
+/* ================= LAYOUT ================= */
 
 .container {
   max-width: 1100px;
   margin: auto;
-  padding: 20px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
 }
 
 /* ================= HERO ================= */
 
 .hero {
   text-align: center;
-  padding: 10px 0;
+  padding: 20px 10px;
 }
 
 .hero h1 {
-  font-size: 40px;
-  font-weight: 800;
+  font-size: 34px;
+  margin: 0;
 }
 
 .hero p {
+  margin: 6px 0 0;
   color: #6b7280;
-  margin-top: 5px;
 }
 
 /* ================= SECTIONS ================= */
@@ -47,9 +45,9 @@ body {
 .calendar-section,
 #selectedDayPanel {
   background: white;
-  padding: 20px;
   border-radius: 18px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 /* ================= INPUT ROW ================= */
@@ -57,42 +55,27 @@ body {
 .task-input-row {
   display: flex;
   gap: 10px;
-  margin: 15px 0;
+  margin-bottom: 12px;
 }
-
-/* ================= INPUTS ================= */
 
 input {
   flex: 1;
   padding: 12px;
-  border: 1px solid #e5e7eb;
   border-radius: 12px;
+  border: none;
+  background: #f3f4f6;
   font-size: 16px;
   outline: none;
 }
 
-input:focus {
-  border-color: #3b82f6;
-}
-
-/* evita zoom raro en móvil */
-@media (max-width: 768px) {
-  input {
-    font-size: 16px;
-  }
-}
-
-/* ================= BUTTONS ================= */
-
 button {
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px;
   background: #3b82f6;
   color: white;
-  border: none;
-  padding: 12px 14px;
-  border-radius: 12px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
-  transition: 0.2s;
 }
 
 button:hover {
@@ -103,42 +86,38 @@ button:hover {
 
 #taskList {
   list-style: none;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-/* ================= TASK ITEM ================= */
-
 li {
   display: flex;
   align-items: center;
-  gap: 12px;
-
-  background: #f8fafc;
+  gap: 10px;
   padding: 12px;
-  border-radius: 14px;
-
-  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  transition: 0.15s;
+  border-radius: 12px;
+  background: #f9fafb;
 }
-
-li:hover {
-  transform: translateY(-1px);
-}
-
-/* ================= TASK TEXT ================= */
 
 .task-text {
   flex: 1;
-  min-width: 0;
 }
-
-/* ================= CHECK ================= */
 
 .check {
   cursor: pointer;
   font-size: 18px;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
 }
 
 /* ================= COMPLETED ================= */
@@ -148,29 +127,14 @@ li:hover {
   opacity: 0.5;
 }
 
-/* ================= DELETE BUTTON ================= */
-
-.delete-btn,
-.mini-delete {
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-
-/* ================= CALENDAR HEADER ================= */
+/* ================= CALENDAR ================= */
 
 .calendar-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
-
-/* ================= CALENDAR GRID ================= */
 
 #calendar {
   display: grid;
@@ -181,27 +145,21 @@ li:hover {
 /* ================= DAY ================= */
 
 .day {
-  background: white;
-  border-radius: 14px;
-  min-height: 110px;
+  background: #fff;
+  border-radius: 12px;
+  min-height: 100px;
   padding: 8px;
-
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-
+  border: 1px solid #eee;
   display: flex;
   flex-direction: column;
-
-  transition: 0.2s;
 }
 
 .day:hover {
   transform: scale(1.02);
 }
 
-/* ================= DAY NUMBER ================= */
-
 .day-number {
-  font-weight: 700;
+  font-weight: bold;
   font-size: 14px;
   margin-bottom: 6px;
 }
@@ -211,71 +169,48 @@ li:hover {
 .calendar-tasks {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
 }
-
-/* ================= MINI TASK ================= */
 
 .mini-task {
   background: #3b82f6;
   color: white;
-
   border-radius: 8px;
   padding: 4px 6px;
-
   font-size: 11px;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 5px;
 }
 
-/* ================= MINI COMPLETED ================= */
-
-.completed-mini span {
-  text-decoration: line-through;
-  opacity: 0.6;
+.mini-task button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
 }
 
-/* ================= PAST / TODAY ================= */
-
-.past-day {
-  opacity: 0.4;
-  background: #e5e7eb;
-}
+/* ================= STATES ================= */
 
 .today {
   border: 2px solid #3b82f6;
-  box-shadow: 0 0 10px rgba(59,130,246,0.3);
 }
 
-/* ================= SPLASH ================= */
-
-#splash {
-  position: fixed;
-  inset: 0;
-  background: #3b82f6;
-  color: white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 36px;
-  z-index: 9999;
+.past-day {
+  opacity: 0.4;
 }
 
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
 
-  .container {
-    padding: 12px;
+  .hero h1 {
+    font-size: 26px;
   }
 
-  .hero h1 {
-    font-size: 28px;
+  #calendar {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .task-input-row {
@@ -286,28 +221,11 @@ li:hover {
     width: 100%;
   }
 
-  #calendar {
-    gap: 5px;
+  li {
+    font-size: 14px;
   }
 
   .day {
-    min-height: 90px;
+    min-height: 80px;
   }
-
-  .mini-task {
-    font-size: 10px;
-  }
-}
-/* ================= DRAG FEEDBACK ================= */
-
-li.dragging {
-  opacity: 0.5;
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.day.drag-over {
-  background: #dbeafe;
-  transform: scale(1.03);
-  transition: 0.2s;
 }
