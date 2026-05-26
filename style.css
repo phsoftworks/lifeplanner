@@ -1,166 +1,268 @@
+/* ================= GENERAL ================= */
+
 body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(120deg, #89f7fe, #66a6ff);
   margin: 0;
+  padding: 20px;
+
+  font-family: Arial, sans-serif;
+
+  background: #f1f5f9;
+
+  color: #111827;
 }
 
-/* APP LAYOUT */
+/* ================= LAYOUT ================= */
+
 .app {
   display: flex;
-  height: 100vh;
+  gap: 20px;
+
+  min-height: 100vh;
 }
 
-/* SIDEBAR */
+/* ================= SIDEBAR ================= */
+
 .sidebar {
-  width: 300px;
+  width: 320px;
+
   background: white;
+
   padding: 20px;
-  overflow-y: auto;
+
+  border-radius: 20px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
+
 .main {
   flex: 1;
+
+  background: white;
+
   padding: 20px;
+
+  border-radius: 20px;
+
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
-/* TASKS */
+/* ================= TITLES ================= */
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+}
+
+/* ================= INPUTS ================= */
+
+input {
+  width: 100%;
+
+  padding: 12px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: #f3f4f6;
+
+  font-size: 16px;
+
+  box-sizing: border-box;
+
+  margin-bottom: 10px;
+}
+
+/* ================= BUTTONS ================= */
+
+button {
+  border: none;
+
+  border-radius: 10px;
+
+  padding: 10px 14px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* ================= TASK LIST ================= */
+
+#taskList {
+  padding: 0;
+}
+
 li {
+  list-style: none;
+
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #f3f3f3;
-  padding: 10px;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  background: #f8fafc;
+
+  padding: 12px;
+
   margin-top: 10px;
-  border-radius: 8px;
+
+  border-radius: 12px;
+
+  transition: 0.2s;
 }
 
-/* ❗ SOLO EL TEXTO SE TACHA */
+li:hover {
+  transform: translateY(-2px);
+}
+
+.task-text {
+  flex: 1;
+}
+
+/* SOLO EL TEXTO TACHADO */
+
 .completed .task-text {
   text-decoration: line-through;
+
   opacity: 0.6;
+
   color: #777;
 }
 
-/* BOTÓN DELETE BONITO */
-.delete-btn {
-  background: red;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 10px;
+/* ================= CHECK ================= */
+
+.check {
   cursor: pointer;
+
+  font-size: 18px;
+}
+
+/* ================= DELETE BUTTON ================= */
+
+.delete-btn,
+.mini-delete {
+
+  background: #ef4444;
+
+  color: white;
+
   font-weight: bold;
 }
 
-/* CALENDARIO */
+/* ================= CALENDAR ================= */
+
 #calendar {
   display: grid;
+
   grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
-  min-height: 200px;
+
+  gap: 10px;
 }
 
+/* ================= DAY ================= */
+
 .day {
-  background: #fff;
-  border: 1px solid #ddd;
-  min-height: 60px;
+
+  background: white;
+
+  border-radius: 16px;
+
+  min-height: 120px;
+
+  padding: 8px;
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+  transition: 0.2s;
+
   display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
+
+  flex-direction: column;
 }
 
 .day:hover {
-  background: #eee;
+  transform: translateY(-3px);
 }
 
-/* SPLASH */
-#splash {
-  position: fixed;
-  inset: 0;
-  background: #4CAF50;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-}
-.day {
-  background: white;
-  border-radius: 10px;
-  min-height: 100px;
-  padding: 8px;
-  border: 1px solid #ddd;
-
-  display: flex;
-  flex-direction: column;
-}
+/* ================= DAY NUMBER ================= */
 
 .day-number {
+
   font-weight: bold;
-  margin-bottom: 6px;
+
+  margin-bottom: 8px;
 }
+
+/* ================= CALENDAR TASKS ================= */
 
 .calendar-tasks {
+
   display: flex;
+
   flex-direction: column;
-  gap: 4px;
-}
-
-.mini-task {
-  background: #4CAF50;
-  color: white;
-  padding: 4px 6px;
-  border-radius: 6px;
-  font-size: 11px;
-}
-.mini-task {
-  background: #4CAF50;
-  color: white;
-  padding: 5px 8px;
-  border-radius: 6px;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   gap: 5px;
 }
 
-.mini-delete {
-  background: transparent;
-  border: none;
+/* ================= MINI TASK ================= */
+
+.mini-task {
+
+  background: #3b82f6;
+
   color: white;
-  cursor: pointer;
+
+  border-radius: 8px;
+
+  padding: 5px 8px;
+
   font-size: 12px;
-}
-.past-day {
-  opacity: 0.45;
-  background: #e0e0e0;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 5px;
 }
 
-.today {
-  border: 2px solid #4CAF50;
-  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
-}
+/* ================= COMPLETED MINI ================= */
+
 .completed-mini span {
+
   text-decoration: line-through;
-  opacity: 0.6;
+
+  opacity: 0.7;
 }
+
+/* ================= PAST DAYS ================= */
 
 .past-day {
-  opacity: 0.45;
-  background: #dcdcdc;
+
+  opacity: 0.5;
+
+  background: #e5e7eb;
 }
 
+/* ================= TODAY ================= */
+
 .today {
-  border: 2px solid #4CAF50;
-  box-shadow: 0 0 10px rgba(76,175,80,0.5);
+
+  border: 2px solid #3b82f6;
+
+  box-shadow: 0 0 12px rgba(59,130,246,0.3);
 }
+
 /* ================= MOBILE ================= */
 
 @media (max-width: 768px) {
@@ -169,8 +271,19 @@ li {
     padding: 10px;
   }
 
+  .app {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: auto;
+  }
+
+  .main {
+    width: auto;
+  }
+
   h1 {
-    font-size: 24px;
     text-align: center;
   }
 
@@ -179,9 +292,10 @@ li {
   }
 
   .day {
+
     min-height: 80px;
+
     padding: 5px;
-    border-radius: 10px;
   }
 
   .day-number {
@@ -190,22 +304,7 @@ li {
 
   .mini-task {
     font-size: 10px;
-    padding: 2px;
-  }
-
-  #taskInput,
-  #dayTaskInput {
-    width: 100%;
-    font-size: 16px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  li {
-    font-size: 14px;
+    padding: 4px;
   }
 
 }
