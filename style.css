@@ -161,3 +161,51 @@ li {
   border: 2px solid #4CAF50;
   box-shadow: 0 0 10px rgba(76,175,80,0.5);
 }
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+
+  body {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  #calendar {
+    gap: 5px;
+  }
+
+  .day {
+    min-height: 80px;
+    padding: 5px;
+    border-radius: 10px;
+  }
+
+  .day-number {
+    font-size: 14px;
+  }
+
+  .mini-task {
+    font-size: 10px;
+    padding: 2px;
+  }
+
+  #taskInput,
+  #dayTaskInput {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  li {
+    font-size: 14px;
+  }
+
+}
