@@ -11,42 +11,80 @@
 
 <div id="splash">🧠 LifePlanner</div>
 
-<div class="app">
+<div class="container">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar">
+  <!-- HERO -->
+  <section class="hero">
+
     <h1>🧠 LifePlanner</h1>
-    <p>Organiza tu día sin estrés</p>
 
-    <input id="taskInput" placeholder="Escribe una tarea...">
-    <button onclick="addTask()">Añadir</button>
+    <p>
+      Organiza tu vida sin estrés
+    </p>
+
+  </section>
+
+  <!-- TASKS -->
+  <section class="tasks-section">
+
+    <h2>✅ Tareas</h2>
+
+    <div class="task-input-row">
+
+      <input
+        id="taskInput"
+        placeholder="Escribe una tarea..."
+      >
+
+      <button onclick="addTask()">
+        Añadir
+      </button>
+
+    </div>
 
     <ul id="taskList"></ul>
-  </div>
 
-  <!-- MAIN -->
-  <div class="main">
+  </section>
 
-    <h2>📅 Calendario</h2>
+  <!-- CALENDAR -->
+  <section class="calendar-section">
 
     <div class="calendar-header">
+
       <button onclick="prevMonth()">◀</button>
-      <h3 id="monthTitle"></h3>
+
+      <h2 id="monthTitle"></h2>
+
       <button onclick="nextMonth()">▶</button>
+
     </div>
 
     <div id="calendar"></div>
 
-    <div id="selectedDayPanel">
-      <h3 id="selectedDayTitle">Selecciona un día</h3>
+  </section>
 
-      <input id="dayTaskInput" placeholder="Tarea del día...">
-      <button onclick="addTaskToDay()">Añadir</button>
+  <!-- DAY PANEL -->
+  <section id="selectedDayPanel">
 
-      <ul id="dayTaskList"></ul>
+    <h3 id="selectedDayTitle">
+      Selecciona un día
+    </h3>
+
+    <div class="task-input-row">
+
+      <input
+        id="dayTaskInput"
+        placeholder="Tarea del día..."
+      >
+
+      <button onclick="addTaskToDay()">
+        Añadir
+      </button>
+
     </div>
 
-  </div>
+  </section>
+
 </div>
 
 <script src="script.js"></script>
