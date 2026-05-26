@@ -71,6 +71,14 @@ li.dataset.id = task.id;
 
   return li;
 }
+li.addEventListener("dragstart", (e) => {
+  li.classList.add("dragging");
+  e.dataTransfer.setData("taskId", task.id);
+});
+
+li.addEventListener("dragend", () => {
+  li.classList.remove("dragging");
+});
 
 function renderTaskList() {
   const list = document.getElementById("taskList");
@@ -122,15 +130,12 @@ function renderCalendar() {
 
     calendar.innerHTML += `
       <div class="day ${extraClass}"
-        onclick="selectDay(${d})"
-        ondragover="allowDrop(event)"
-        ondrop="dropTask(event, '${key}')">
+  onclick="selectDay(${d})"
+  ondragover="allowDrop(event)"
+  ondragenter="this.classList.add('drag-over')"
+  ondragleave="this.classList.remove('drag-over')"
+  ondrop="dropTask(event, '${key}')">
 
-        <div class="day-number">${d}</div>
-
-        <div class="calendar-tasks" id="day-${key}">
-          ${dayTasks.map(t => `
-  <div 
     class="mini-task ${t.completed ? "completed-mini" : ""}"
     draggable="true"
     ondragstart="startCalendarDrag(event, ${t.id})"
@@ -207,6 +212,9 @@ function dropTask(e, dateKey) {
   renderCalendar();
   setTimeout(initSortable, 0);
 }
+  document.querySelectorAll(".day").forEach(d => {
+  d.classList.remove("drag-over");
+});
 
 /* ================= NAV ================= */
 

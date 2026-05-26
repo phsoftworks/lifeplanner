@@ -298,3 +298,16 @@ li:hover {
     font-size: 10px;
   }
 }
+/* ================= DRAG FEEDBACK ================= */
+
+li.dragging {
+  opacity: 0.5;
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.day.drag-over {
+  background: #dbeafe;
+  transform: scale(1.03);
+  transition: 0.2s;
+}
