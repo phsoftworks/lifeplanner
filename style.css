@@ -408,6 +408,12 @@ li {
 .main {
   margin-top: 40px;
 }
+.day {
+  min-height: 110px;
+}
+.mini-task {
+  font-size: 12px;
+}
 }
 input {
   width: 100%;
