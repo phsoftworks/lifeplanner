@@ -8,6 +8,24 @@ let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 function save() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
+function updateStats() {
+
+  const total = tasks.length;
+
+  const completed =
+    tasks.filter(t => t.completed).length;
+
+  const pending = total - completed;
+
+  document.getElementById("totalTasks").textContent =
+    total;
+
+  document.getElementById("completedTasks").textContent =
+    completed;
+
+  document.getElementById("pendingTasks").textContent =
+    pending;
+}
 
 /* ================= TASKS ================= */
 
@@ -28,6 +46,7 @@ function addTask() {
   save();
   renderTaskList();
   renderCalendar();
+  updateStats();
 }
 
 function toggleTask(id) {
@@ -39,6 +58,7 @@ function toggleTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+  updateStats();
 }
 
 function deleteTask(id) {
@@ -47,6 +67,7 @@ function deleteTask(id) {
   save();
   renderTaskList();
   renderCalendar();
+  updateStats();
 }
 
 /* ================= RENDER TASK LIST ================= */
@@ -166,6 +187,7 @@ function addTaskToDay() {
   save();
   renderTaskList();
   renderCalendar();
+  updateStats();
 }
 
 /* ================= MONTH NAV ================= */
