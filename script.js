@@ -207,7 +207,7 @@ function nextMonth() {
 window.addEventListener("load", () => {
   renderTaskList();
   renderCalendar();
-
+updateStats();
   document.getElementById("taskInput").addEventListener("keydown", (e) => {
     if (e.key === "Enter") addTask();
   });
