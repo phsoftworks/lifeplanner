@@ -1,125 +1,205 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#3b82f6"
+  >
+
   <title>LifePlanner</title>
+
   <link rel="stylesheet" href="style.css">
+
   <link rel="manifest" href="manifest.json">
+
 </head>
 
 <body>
 
-<div id="splash">🧠 LifePlanner</div>
+  <!-- SPLASH -->
 
-<div class="container">
-
-  <!-- HERO -->
-  <section class="hero">
-<section class="stats">
-
-  <div class="stat-card">
-    <h3 id="totalTasks">0</h3>
-    <p>Tareas</p>
+  <div id="splash">
+    🧠 LifePlanner
   </div>
 
-  <div class="stat-card">
-    <h3 id="completedTasks">0</h3>
-    <p>Completadas</p>
+  <!-- CONTAINER -->
+
+  <div class="container">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+      <h1>
+        🧠 LifePlanner
+      </h1>
+
+      <p>
+        Organiza tu vida sin estrés
+      </p>
+
+    </section>
+
+    <!-- STATS -->
+
+    <section class="stats">
+
+      <div class="stat-card">
+
+        <h3 id="totalTasks">
+          0
+        </h3>
+
+        <p>
+          Tareas
+        </p>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h3 id="completedTasks">
+          0
+        </h3>
+
+        <p>
+          Completadas
+        </p>
+
+      </div>
+
+      <div class="stat-card">
+
+        <h3 id="pendingTasks">
+          0
+        </h3>
+
+        <p>
+          Pendientes
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- TASKS -->
+
+    <section class="tasks-section">
+
+      <h2>
+        ✅ Tareas
+      </h2>
+
+      <div class="task-input-row">
+
+        <input
+          id="taskInput"
+          placeholder="Escribe una tarea..."
+        >
+
+        <button onclick="addTask()">
+          Añadir
+        </button>
+
+      </div>
+
+      <ul id="taskList"></ul>
+
+    </section>
+
+    <!-- CALENDAR -->
+
+    <section class="calendar-section">
+
+      <div class="calendar-header">
+
+        <button onclick="prevMonth()">
+          ◀
+        </button>
+
+        <h2 id="monthTitle"></h2>
+
+        <button onclick="nextMonth()">
+          ▶
+        </button>
+
+      </div>
+
+      <div id="calendar"></div>
+
+    </section>
+
+    <!-- DAY PANEL -->
+
+    <section id="selectedDayPanel">
+
+      <h3 id="selectedDayTitle">
+        Selecciona un día
+      </h3>
+
+      <div class="task-input-row">
+
+        <input
+          id="dayTaskInput"
+          placeholder="Tarea del día..."
+        >
+
+        <button onclick="addTaskToDay()">
+          Añadir
+        </button>
+
+      </div>
+
+    </section>
+
   </div>
 
-  <div class="stat-card">
-    <h3 id="pendingTasks">0</h3>
-    <p>Pendientes</p>
-  </div>
+  <!-- SORTABLE -->
 
-</section>
-    <h1>🧠 LifePlanner</h1>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
-    <p>
-      Organiza tu vida sin estrés
-    </p>
+  <!-- APP -->
 
-  </section>
+  <script src="script.js"></script>
 
-  <!-- TASKS -->
-  <section class="tasks-section">
+  <!-- SERVICE WORKER -->
 
-    <h2>✅ Tareas</h2>
+  <script>
 
-    <div class="task-input-row">
+    if ("serviceWorker" in navigator) {
 
-      <input
-        id="taskInput"
-        placeholder="Escribe una tarea..."
-      >
+      navigator.serviceWorker.register("sw.js");
 
-      <button onclick="addTask()">
-        Añadir
-      </button>
+    }
 
-    </div>
+    window.addEventListener("load", () => {
 
-    <ul id="taskList"></ul>
+      setTimeout(() => {
 
-  </section>
+        const splash =
+          document.getElementById("splash");
 
-  <!-- CALENDAR -->
-  <section class="calendar-section">
+        if (splash) {
 
-    <div class="calendar-header">
+          splash.style.display = "none";
 
-      <button onclick="prevMonth()">◀</button>
+        }
 
-      <h2 id="monthTitle"></h2>
+      }, 800);
 
-      <button onclick="nextMonth()">▶</button>
+    });
 
-    </div>
-
-    <div id="calendar"></div>
-
-  </section>
-
-  <!-- DAY PANEL -->
-  <section id="selectedDayPanel">
-
-    <h3 id="selectedDayTitle">
-      Selecciona un día
-    </h3>
-
-    <div class="task-input-row">
-
-      <input
-        id="dayTaskInput"
-        placeholder="Tarea del día..."
-      >
-
-      <button onclick="addTaskToDay()">
-        Añadir
-      </button>
-
-    </div>
-
-  </section>
-
-</div>
-<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
-
-<script src="script.js"></script>
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splash");
-    if (splash) splash.style.display = "none";
-  }, 800);
-});
-</script>
+  </script>
 
 </body>
+
 </html>
